@@ -3,12 +3,14 @@ import requests
 import json
 from github import Github
 
-githubRepo = "48otw"
-githubToken = "9115eb126eb6c518e7748135bf73fda76564a785"
+config = None
+with open("config.json", 'r') as file:
+	config = json.loads(file.read())
+	print("config file loaded")
 
 def getFile(fileName):
-	g = Github(githubToken)
-	repo = g.get_user().get_repo(githubRepo)
+	g = Github(config['token'])
+	repo = g.get_user().get_repo(config['repo'])
 
 	try:
 		file_content = repo.get_contents(fileName)
@@ -18,8 +20,8 @@ def getFile(fileName):
 		pass
 
 def saveFile(fileName, fileContent):
-	g = Github(githubToken)
-	repo = g.get_user().get_repo(githubRepo)
+	g = Github(config['token'])
+	repo = g.get_user().get_repo(config['repo'])
 
 	# create or update accordingly
 	try:
@@ -29,11 +31,11 @@ def saveFile(fileName, fileContent):
 		repo.create_file(fileName, f"create {fileName}", fileContent)
 		pass
 
-	return f"https://raw.githubusercontent.com/shiabehugo/{githubRepo}/master/{fileName}"
+	return f"https://raw.githubusercontent.com/shiabehugo/{config['repo']}/master/{fileName}"
 
 def deleteFile(fileName):
-	g = Github(githubToken)
-	repo = g.get_user().get_repo(githubRepo)
+	g = Github(config['token'])
+	repo = g.get_user().get_repo(config['repo'])
 
 	try:
 		file = repo.get_contents(fileName)

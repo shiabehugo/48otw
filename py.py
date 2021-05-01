@@ -1,7 +1,7 @@
 import subprocess, os
 import githubController
 
-datHost = 'https://raw.githubusercontent.com/shiabehugo/48otw/master/'
+datHost = 'https://raw.githubusercontent.com/shiabehugo/48otw/master'
 hostFolderName = 'data'
 
 def NameToDirectoryName(name):
@@ -52,7 +52,7 @@ if input("save info to local repo? (y/n): ").lower() == 'y':
 	with open(f"{hostFolderName}/{NameToDirectoryName(artistName)}/{NameToDirectoryName(albumName)}.dat", 'w+') as albumDat:
 		albumDat.write(outputString)
 	with open(f"{hostFolderName}/{NameToDirectoryName(artistName)}/albums.dat", 'a+') as albumsDat:
-		albumsDat.write(f"{albumName}\\{datHost}{NameToDirectoryName(artistName)}/{NameToDirectoryName(albumName)}.dat\\{imageUrl}\n")
+		albumsDat.write(f"{albumName}\\{datHost}/{hostFolderName}/{NameToDirectoryName(artistName)}/{NameToDirectoryName(albumName)}.dat\\{imageUrl}\n")
 
 	with open(f"{hostFolderName}/artists.dat", 'r') as artistsFile:
 		lines = [x for x in artistsFile.read().split('\n') if len(x) > 0]
@@ -60,7 +60,7 @@ if input("save info to local repo? (y/n): ").lower() == 'y':
 		name2DatLine = {}
 		for i in range(len(lines)):
 			name2DatLine[artistNames[i]] = lines[i]
-		name2DatLine[artistName] = f"{artistName}\\{datHost}{NameToDirectoryName(artistName)}/albums.dat"
+		name2DatLine[artistName] = f"{artistName}\\{datHost}/{hostFolderName}/{NameToDirectoryName(artistName)}/albums.dat"
 		if artistName not in artistNames:
 			artistNames.append(artistName)
 
