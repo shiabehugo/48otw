@@ -48,7 +48,10 @@ if input("save info to local repo? (y/n): ").lower() == 'y':
 	# save to local repo
 	print("- Enter album cover image url: ", end='')
 	imageUrl = input()
-	subprocess.run(["mkdir", f"{hostFolderName}/{NameToDirectoryName(artistName)}"], stdout=subprocess.DEVNULL)
+	try:
+		subprocess.run(["mkdir", f"{hostFolderName}/{NameToDirectoryName(artistName)}"], stdout=subprocess.DEVNULL)
+	except:
+		pass
 	with open(f"{hostFolderName}/{NameToDirectoryName(artistName)}/{NameToDirectoryName(albumName)}.dat", 'w+') as albumDat:
 		albumDat.write(outputString)
 	with open(f"{hostFolderName}/{NameToDirectoryName(artistName)}/albums.dat", 'a+') as albumsDat:
