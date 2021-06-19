@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, io
 import githubController
 
 datHost = 'https://raw.githubusercontent.com/shiabehugo/48otw/master'
@@ -57,7 +57,7 @@ if input("save info to local repo? (y/n): ").lower() == 'y':
 	with open(f"{hostFolderName}/{NameToDirectoryName(artistName)}/albums.dat", 'a+') as albumsDat:
 		albumsDat.write(f"{albumName}\\{datHost}/{hostFolderName}/{NameToDirectoryName(artistName)}/{NameToDirectoryName(albumName)}.dat\\{imageUrl}\n")
 
-	with open(f"{hostFolderName}/artists.dat", 'r') as artistsFile:
+	with io.open(f"{hostFolderName}/artists.dat", mode='r', encoding='utf-8') as artistsFile:
 		lines = [x for x in artistsFile.read().split('\n') if len(x) > 0]
 		artistNames = [x[:x.find('\\')] for x in lines]
 		name2DatLine = {}
