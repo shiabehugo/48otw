@@ -94,5 +94,5 @@ if input("upload to github? (y/n): ").lower() == 'y':
 	# githubController.saveFile(f"{hostFolderName}/{NameToDirectoryName(artistName)}/albums.dat", albumsDat)
 	
 subprocess.run(['git', 'restore', '.'])
-subprocess.run(['git', 'clean' '-f'])
+subprocess.run(['git', 'clean', '-f'])
 subprocess.run(['git', 'pull'])
