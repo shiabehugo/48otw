@@ -1,5 +1,10 @@
-import subprocess, os, io
+import subprocess, os, io, re
 import githubController
+
+def natural_sort(l): 
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    return sorted(l, key=alphanum_key)
 
 datHost = 'https://raw.githubusercontent.com/shiabehugo/48otw/master'
 hostFolderName = 'data'
@@ -14,14 +19,16 @@ def NameToDirectoryName(name):
 			out += '_'
 	return out
 
+albumMusicPath = "/media/pi/Untitled/music/static/" + input("- Enter album path with music files: ").replace('\\', '/')
+
 if input("get song names? (y/n): ").lower() == 'y':
 	os.chdir('getSongNames')
-	subprocess.run(['python', 'py.py'])
+	subprocess.run(['python', 'py.py', albumMusicPath])
 	os.chdir('..')
 
-if input("get drive links from html? (y/n): ").lower() == 'y':
-	os.chdir('googleDrive')
-	subprocess.run(['python', 'py.py'])
+if input("get song urls? (y/n): ").lower() == 'y':
+	os.chdir('getSongUrls')
+	subprocess.run(['python', 'py.py', albumMusicPath])
 	os.chdir('..')
 
 print("- Enter artist name: ", end='')
@@ -34,12 +41,16 @@ if input("save info to local repo? (y/n): ").lower() == 'y':
 	# combine out files
 	with open("getSongNames/out.txt", 'r') as f:
 		names = f.read().splitlines()
-	with open("googleDrive/out.txt", 'r') as f:
+	with open("getSongUrls/out.txt", 'r') as f:
 		urls = f.read().splitlines()
 
 	outputString = artistName + '\\' + albumName + '\n'
-	for pair in zip(names, urls):
-		outputString += pair[0] + '\\' + pair[1] + '\n'
+	urlToNameDict = {urls[i]: names[i] for i in range(len(urls))}
+	urls = natural_sort(urls)
+	for url in urls:
+		outputString += urlToNameDict[url] + '\\' + url + '\n'
+	# for pair in zip(names, urls):
+		# outputString += pair[0] + '\\' + pair[1] + '\n'
 
 	print(outputString)
 	with open('out.txt', 'w') as output:

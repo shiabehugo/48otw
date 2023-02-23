@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 def scanFolder(folder):
 	return [i for i in os.listdir(folder) if i[-4:] == ".mp3" or i[-5:] == ".flac"]
@@ -22,7 +23,10 @@ def findStartingIndex(fileList):
 	return startIndex + 1
 
 
-mypath = input("path: ")
+if len(sys.argv) > 1:
+	mypath = sys.argv[1]
+else:
+	mypath = input("path: ")
 endPattern = r"\.(mp3)|\.(flac)"
 
 f = scanFolder(mypath)
